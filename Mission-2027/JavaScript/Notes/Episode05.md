@@ -5,7 +5,7 @@ Shortest JS Program - So here if there is a js file without any line and if we t
 
 Global execution Context - Variables and functions defined inside this are known as global variables and then if there are some variables that are defined inside function, those become local variables to that function.
 
-JS engine creates a window object ( which has predefined function ) and in gloabl execution context window points to **this**. that means for example
+The browser creates the window object. JavaScript running inside the browser uses it as the global object. ( which has predefined function ) and in gloabl execution context window points to **this**. that means for example
 
 var a=10
 console.log(window.a);
@@ -14,13 +14,13 @@ console.log(a)
 
 All three of them will print same value that is 10.
 
-So any variable/function you declare in global scope gets attached to window object as well.
+Global variables declared using var become properties of the browser's window object.(Not let and const)
 ## Things That Confused Me
 this behaviour - I guess it might be covered in next scenario
 
 ## Interview Questions
 What are global and local variables?
-Difference between window object and this object?
+What is the difference between the window object and the this keyword? (keep in mind this is not an object)
 Can you write shortest program in jS?
 A variable t is defined inside function getName, The getName is defined in glaobal scope. what output will get when we do console.log(t) in global scope?Why?
   
