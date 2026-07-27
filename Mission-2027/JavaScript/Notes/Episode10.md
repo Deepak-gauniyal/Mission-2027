@@ -8,10 +8,13 @@ So there are closures that are formed even when Execution context  of parent is 
 And then there are closures that are formed when Execution context of parent is all together popped from stack, still it preserved the lexical environment.- Ex2
 
 So can we say closure is the funtion along with its lexical environment. It is something that is preserved for the time where function will be called and not the time when it is defined. (there is polished version of this statement in 30 seconds revision).
+
+Introduction of Places where closure is used and how useful it is:
+- Module design patterns, currying, functions like once, memoise, maintaining state in async world, setTimeouts, iterators and many more.
 ## Interview Questions
 - What is closure?
 ## My Own Explanation
-
+_ Same as what I learned and things that confused me collaborated.
 ## Code Examples
 function x(){
   var t=0;
@@ -40,7 +43,7 @@ temp();
 Since Y preserved the lexical environment ( which is created based on where the function is difined before the execution of code.), Though x ended and its EC is also removed from the call stack before reaching the line where we are calling temp(), yet  will preserve lexical env and will print 1000 (not 90).
 ++++++++++++++++++++++++++++++++
 ## Interview Discussion
-
+- Will do it at the end of course.
 ## Revision in 30 Seconds
 -Lexical Environment is combination of variable environment plus reference to its parent/outer lexical environment.
 -A function forms a closure with its lexical environment when the function is created. If it references variables from that lexical environment, it can access them whenever it executes.
