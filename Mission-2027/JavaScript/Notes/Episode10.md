@@ -2,7 +2,7 @@
 Closure, Function returning function, Lexical Environment and Execution Context behaviour with closure.
 ## What I Learned
 Lexical Environment is combination of variable environment plus reference to its parent/outer lexical environment.
-Closure -  function along with its lexical scope.
+Closure -  function bundled with its lexical scope forms closure.
 ## Things That Confused Me
 So there are closures that are formed even when Execution context  of parent is alive (Example 1)
 And then there are closures that are formed when Execution context of parent is all together popped from stack, still it preserved the lexical environment.- Ex2
