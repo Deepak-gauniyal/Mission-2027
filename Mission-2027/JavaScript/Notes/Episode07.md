@@ -7,6 +7,7 @@ Scope chain - A variable when trying to get its value, it will first check in lo
 When we say Lexical Environment, Scope and Execution context memory part difference.
 ## Interview Questions
 - What is Lexical Environment how it is different from Execution Context.
+- Lexical Environment and Variable Environment difference?
 - What is scope of a variable or function.
 - Can I see Lexical Environment in browser console?
 - Difference between Scope Chain and Call Stack?
