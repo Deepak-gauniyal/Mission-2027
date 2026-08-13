@@ -10,32 +10,228 @@
 - removeEventListener
 - Event Listener and Memory Management
 ## What I Learned
-Callback Functions - In Js function are first class citizens. meaning they can be used as a value and can be passed as an argument to another function. Such functions are known as callback functions. 
-we know that JS is synchronous single threaded language. But this capability of call back functions help JS to do asynchronous operations.
+First-Class Functions
 
-setTimeout is the classic example.
+In JavaScript, functions are first-class values.
 
-Blocking main thread - Js is single threaded language, That is a single call stack. We have to be careful while writing the code that our code is not clocking that main thread. That is not taking its time indefinitely. Long-running synchronous JavaScript blocks the main thread because JavaScript executes code on the main thread and has a single call stack. While that work is executing, other JavaScript tasks and UI-related work may be delayed. (Infinite loop is typical example).
+This means functions can be:
 
-Event Listeners - In Javascript we have many event listeners like on click, on input, on hover etc. They listen to one particular statement and then call the callback function whehnever that event occurs. 
+Assigned to variables
+Passed as arguments
+Returned from another function
+Stored in objects or arrays
 
-document.getElementById('someId').addEventListener('click',function(){
-  console.log('button Clicked');
+Example:
+
+function greet() {
+    console.log("Hello");
+}
+
+let fn = greet;
+
+fn();
+
+Here, fn holds a reference to the function greet.
+
+This ability of JavaScript is called first-class function behavior.
+
+Callback Functions
+
+A callback function is a function that is passed to another function and is intended to be called by that function.
+
+function x(callback) {
+    console.log("Inside x");
+    callback();
+}
+
+x(function () {
+    console.log("Hello");
 });
 
-- Closure along with event listeners
-  function attachEventListner(){
-    cnt=0
-    document.getElementById('someId').addEventListener('click',function(){
-    console.log('button Clicked',++cnt);
-    });
-  }
+Here, the anonymous function is a callback because it is passed to x() and x() calls it.
 
-  In above example event callback function creates closure with its outer environment and it remembers value of cnt. Akshay also showed same in event listener tab of developer tools. Something we can try at the end.
+Important:
 
-  event listeners are heavy, that means they take good amount of memory. If we have multiple events on our page it slows down the page because of so many closures and memory. That is why good practice is to removeEventListeners when not in use and with that garbage collection will happen. EVENT DELEGATION is better term whihc we'll study at later point in time.
+Callback ≠ Asynchronous
 
-  Next topic is going to be event loop.
+A callback can execute synchronously:
+
+function x(callback) {
+    callback();
+}
+
+x(function () {
+    console.log("Hello");
+});
+
+The callback executes immediately.
+
+Callbacks are often used with asynchronous APIs, but the callback itself does not make the operation asynchronous.
+
+setTimeout and Asynchronous Behavior
+
+setTimeout is an example of an asynchronous API provided by the host environment.
+
+console.log("A");
+
+setTimeout(function () {
+    console.log("B");
+}, 1000);
+
+console.log("C");
+
+Output:
+
+A
+C
+B
+
+When JavaScript encounters setTimeout, it does not wait for one second on that line.
+
+The setTimeout function itself executes on the call stack and then the timer is handled by the browser/runtime.
+
+After the timer expires, the callback becomes eligible to run and is eventually picked up by the event loop.
+
+The detailed mechanism will be covered in the next episode.
+
+Blocking the Main Thread
+
+JavaScript's main execution is single-threaded and has one main call stack.
+
+Therefore, long-running synchronous JavaScript can block the main thread.
+
+For example:
+
+function heavyTask() {
+    for (let i = 0; i < 10000000000; i++) {
+        // heavy computation
+    }
+}
+
+While this code is executing, other work that needs the main thread may be delayed.
+
+Therefore:
+
+We should avoid unnecessarily long-running synchronous JavaScript because it can make the application slow or unresponsive.
+
+Event Listeners
+
+JavaScript allows us to listen for events such as:
+
+click
+input
+mouseover
+submit
+load
+
+Example:
+
+const button = document.getElementById("someId");
+
+button.addEventListener("click", function () {
+    console.log("Button clicked");
+});
+
+Here:
+
+"click"
+
+is the event type, and the function is the callback.
+
+The callback is executed when the relevant event occurs.
+
+Closure with Event Listeners
+
+Closures become very useful with event listeners when we want to maintain some state.
+
+function attachEventListener() {
+
+    let cnt = 0;
+
+    document.getElementById("someId")
+        .addEventListener("click", function () {
+            console.log("Button clicked", ++cnt);
+        });
+}
+
+Here, the callback uses cnt from its outer scope.
+
+Therefore, the callback forms a closure over the environment containing cnt.
+
+Even after attachEventListener() finishes, the callback can still access cnt.
+
+So:
+
+First click  → 1
+Second click → 2
+Third click  → 3
+
+The value persists between events.
+
+Garbage Collection
+
+Garbage collection is the mechanism through which JavaScript reclaims memory that is no longer reachable/needed.
+
+A simplified model:
+
+Object is reachable
+       ↓
+    Keep it
+
+Object is no longer reachable
+       ↓
+Eligible for garbage collection
+       ↓
+Memory can eventually be reclaimed
+
+In the closure example, cnt remains reachable through the callback/closure while the event listener still needs it.
+
+Therefore, it cannot simply be garbage collected while it is still reachable.
+
+removeEventListener
+
+Sometimes an event listener is no longer required.
+
+We can remove it using:
+
+function handleClick() {
+    console.log("Clicked");
+}
+
+button.addEventListener("click", handleClick);
+
+// Later
+button.removeEventListener("click", handleClick);
+
+An important point is that removeEventListener() requires the same function reference that was used while adding the listener.
+
+This will NOT work:
+
+button.addEventListener("click", function () {
+    console.log("Clicked");
+});
+
+button.removeEventListener("click", function () {
+    console.log("Clicked");
+});
+
+Although the functions look identical, they are two different function objects.
+
+Do Event Listeners Always Make an Application Slow?
+
+No.
+
+Having many event listeners does not automatically mean the application will become slow.
+
+The actual problem depends on things such as:
+
+Number of listeners
+Work performed by each callback
+How frequently events occur
+Repeatedly adding listeners unnecessarily
+References being retained unnecessarily
+
+For many similar elements, techniques such as event delegation can sometimes reduce the number of listeners required..
 ## Things That Confused Me
 1. How do we remove an event listener from a button when we don't know when the user will click?
         We don't remove it based on when the user will click.
